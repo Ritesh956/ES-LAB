@@ -1,0 +1,19 @@
+ARM Linker, 5.03 [Build 76] [MDK-ARM Lite]
+
+==============================================================================
+
+Section Cross References
+
+    q1.o(RESET) refers to q1.o(mycode) for Reset_Handler
+    q1.o(RESET) refers to q2.o(mycode) for Reset_Handler
+    q1.o(RESET) refers to q3.o(mycode) for Reset_Handler
+    q1.o(mycode) refers to q1.o(mydata) for SRC
+    q2.o(RESET) refers to q1.o(mycode) for Reset_Handler
+    q2.o(RESET) refers to q2.o(mycode) for Reset_Handler
+    q2.o(RESET) refers to q3.o(mycode) for Reset_Handler
+    q2.o(mycode) refers to q2.o(mydata) for SRC
+    q3.o(RESET) refers to q1.o(mycode) for Reset_Handler
+    q3.o(RESET) refers to q2.o(mycode) for Reset_Handler
+    q3.o(RESET) refers to q3.o(mycode) for Reset_Handler
+    q3.o(mycode) refers to q3.o(mydata) for SRC
+
