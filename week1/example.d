@@ -1,1 +1,0 @@
-.\example.o: example.s
