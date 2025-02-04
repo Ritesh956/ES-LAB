@@ -1,0 +1,100 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             RESET, DATA, READONLY
+    2 00000000                 EXPORT           __Vectors
+    3 00000000         __Vectors
+    4 00000000 10001000        DCD              0x10001000
+    5 00000004 00000000        DCD              Reset_Handler
+    6 00000008                 ALIGN
+    7 00000008                 AREA             mycode, CODE, READONLY
+    8 00000000         ENTRY
+    9 00000000                 EXPORT           Reset_Handler
+   10 00000000         Reset_Handler
+   11 00000000 4802            LDR              R0,=SRC
+   12 00000002 6801            LDR              R1,[R0]
+   13 00000004         STOP
+   14 00000004 E7FE            B                STOP
+   15 00000006 00 00 12345678 
+                       SRC     DCD              0X12345678
+   16 0000000C         
+   17 0000000C                 END
+              00000000 
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=.\q1.d -
+o.\q1.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\NX
+P\LPC17xx --predefine="__EVAL SETA 1" --list=.\q1.lst q1.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 1 in file q1.s
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 3 in file q1.s
+   Uses
+      At line 2 in file q1.s
+Comment: __Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+ENTRY 00000000
+
+Symbol: ENTRY
+   Definitions
+      At line 8 in file q1.s
+   Uses
+      None
+Comment: ENTRY unused
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 10 in file q1.s
+   Uses
+      At line 5 in file q1.s
+      At line 9 in file q1.s
+
+SRC 00000008
+
+Symbol: SRC
+   Definitions
+      At line 15 in file q1.s
+   Uses
+      At line 11 in file q1.s
+Comment: SRC used once
+STOP 00000004
+
+Symbol: STOP
+   Definitions
+      At line 13 in file q1.s
+   Uses
+      At line 14 in file q1.s
+Comment: STOP used once
+mycode 00000000
+
+Symbol: mycode
+   Definitions
+      At line 7 in file q1.s
+   Uses
+      None
+Comment: mycode unused
+5 symbols
+340 symbols in table
