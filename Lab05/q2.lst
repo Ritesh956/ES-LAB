@@ -1,0 +1,215 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             RESET, DATA, READONLY
+    2 00000000         
+    3 00000000                 EXPORT           __Vectors
+    4 00000000         
+    5 00000000         __Vectors
+    6 00000000 10001000        DCD              0X10001000
+    7 00000004 00000000        DCD              Reset_Handler
+    8 00000008         
+    9 00000008                 ALIGN
+   10 00000008         
+   11 00000008                 AREA             mycode, CODE, READONLY
+   12 00000000         
+   13 00000000                 ENTRY
+   14 00000000         
+   15 00000000                 EXPORT           Reset_Handler
+   16 00000000         
+   17 00000000         Reset_Handler
+   18 00000000 4C0E            LDR              R4, =UNPACKED ; Load address of
+                                                             input array
+   19 00000002 4D0F            LDR              R5, =PACKED ; Load address of o
+                                                            utput array
+   20 00000004 F04F 0703       MOV              R7, #3      ; Number of element
+                                                            s in the array (cha
+                                                            nge as needed)
+   21 00000008         
+   22 00000008         PROCESS_NEXT
+   23 00000008 2F00            CMP              R7, #0
+   24 0000000A D00F            BEQ              END_PROGRAM ; Stop when all ele
+                                                            ments are processed
+                                                            
+   25 0000000C         
+   26 0000000C F854 0B04       LDR              R0, [R4], #4 ; Load an element 
+                                                            and move to the nex
+                                                            t one
+   27 00000010         
+   28 00000010 F04F 0601       MOV              R6, #1      ; Initialize factor
+                                                            ial result to 1
+   29 00000014         
+   30 00000014         FACTORIAL_LOOP
+   31 00000014 2800            CMP              R0, #0
+   32 00000016 D004            BEQ              STORE_RESULT
+   33 00000018 FB06 F600       MUL              R6, R6, R0
+   34 0000001C F1A0 0001       SUB              R0, R0, #1  ; Corrected subtrac
+                                                            tion
+   35 00000020 E7F8            B                FACTORIAL_LOOP ; Continue facto
+                                                            rial calculation
+   36 00000022         
+   37 00000022         STORE_RESULT
+   38 00000022 F845 6B04       STR              R6, [R5], #4 ; Store the factor
+                                                            ial result
+   39 00000026         
+   40 00000026 F1A7 0701       SUB              R7, R7, #1
+   41 0000002A E7ED            B                PROCESS_NEXT ; Process next num
+                                                            ber in the array
+   42 0000002C         
+   43 0000002C         END_PROGRAM
+   44 0000002C         STOP
+   45 0000002C E7FE            B                STOP
+   46 0000002E         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   47 0000002E 00 00 00000004 
+              00000003 
+              00000002 UNPACKED
+                               DCD              0x4, 0x3, 0x2 ; Example input a
+                                                            rray
+   48 0000003C         
+   49 0000003C 00000000 
+              00000000         AREA             mydata, DATA, READWRITE
+   50 00000000         
+   51 00000000 00000000 
+              00000000 
+              00000000 PACKED  DCD              0x00, 0x00, 0x00 ; Output array
+                                                             to store factorial
+                                                             values
+   52 0000000C         
+   53 0000000C                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=.\q2.d -
+o.\q2.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\NX
+P\LPC17xx --predefine="__EVAL SETA 1" --list=.\q2.lst q2.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 1 in file q2.s
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 5 in file q2.s
+   Uses
+      At line 3 in file q2.s
+Comment: __Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+END_PROGRAM 0000002C
+
+Symbol: END_PROGRAM
+   Definitions
+      At line 43 in file q2.s
+   Uses
+      At line 24 in file q2.s
+Comment: END_PROGRAM used once
+FACTORIAL_LOOP 00000014
+
+Symbol: FACTORIAL_LOOP
+   Definitions
+      At line 30 in file q2.s
+   Uses
+      At line 35 in file q2.s
+Comment: FACTORIAL_LOOP used once
+PROCESS_NEXT 00000008
+
+Symbol: PROCESS_NEXT
+   Definitions
+      At line 22 in file q2.s
+   Uses
+      At line 41 in file q2.s
+Comment: PROCESS_NEXT used once
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 17 in file q2.s
+   Uses
+      At line 7 in file q2.s
+      At line 15 in file q2.s
+
+STOP 0000002C
+
+Symbol: STOP
+   Definitions
+      At line 44 in file q2.s
+   Uses
+      At line 45 in file q2.s
+Comment: STOP used once
+STORE_RESULT 00000022
+
+Symbol: STORE_RESULT
+   Definitions
+      At line 37 in file q2.s
+   Uses
+      At line 32 in file q2.s
+Comment: STORE_RESULT used once
+UNPACKED 00000030
+
+Symbol: UNPACKED
+   Definitions
+      At line 47 in file q2.s
+   Uses
+      At line 18 in file q2.s
+Comment: UNPACKED used once
+mycode 00000000
+
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: mycode
+   Definitions
+      At line 11 in file q2.s
+   Uses
+      None
+Comment: mycode unused
+8 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+PACKED 00000000
+
+Symbol: PACKED
+   Definitions
+      At line 51 in file q2.s
+   Uses
+      At line 19 in file q2.s
+Comment: PACKED used once
+mydata 00000000
+
+Symbol: mydata
+   Definitions
+      At line 49 in file q2.s
+   Uses
+      None
+Comment: mydata unused
+2 symbols
+345 symbols in table

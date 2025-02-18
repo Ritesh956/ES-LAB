@@ -1,0 +1,228 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             RESET, DATA, READONLY
+    2 00000000         
+    3 00000000                 EXPORT           __Vectors
+    4 00000000         
+    5 00000000         __Vectors
+    6 00000000 10001000        DCD              0X10001000
+    7 00000004 00000000        DCD              Reset_Handler
+    8 00000008         
+    9 00000008                 ALIGN
+   10 00000008         
+   11 00000008                 AREA             mycode, CODE, READONLY
+   12 00000000         
+   13 00000000                 ENTRY
+   14 00000000         
+   15 00000000                 EXPORT           Reset_Handler
+   16 00000000         
+   17 00000000         Reset_Handler
+   18 00000000 4811            LDR              R0,=PACKED  ; Load base address
+                                                             of array
+   19 00000002 F04F 0100       MOV              R1,#0       ; I = 0 (Outer loop
+                                                             counter)
+   20 00000006         
+   21 00000006         OUTER_LOOP
+   22 00000006 2904            CMP              R1,#4       ; Check if I < N-1 
+                                                            (N=5, so last valid
+                                                             index is 4)
+   23 00000008 D01C            BEQ              STOP        ; If I == N-1, exit
+                                                             loop
+   24 0000000A 460A            MOV              R2,R1       ; Set smallest inde
+                                                            x R2 = I
+   25 0000000C 460B            MOV              R3,R1       ; Set J pointer
+   26 0000000E F101 0301       ADD              R3,R1,#1    ; J = I + 1
+   27 00000012         
+   28 00000012         INNER_LOOP
+   29 00000012 2B05            CMP              R3,#5       ; If J == N, exit i
+                                                            nner loop
+   30 00000014 D009            BEQ              CHECK_SWAP  ; Jump to swap chec
+                                                            k
+   31 00000016 F850 4022       LDR              R4,[R0,R2, LSL #2] ; Load eleme
+                                                            nt at smallest inde
+                                                            x
+   32 0000001A F850 5023       LDR              R5,[R0,R3, LSL #2] ; Load eleme
+                                                            nt at J index
+   33 0000001E 42A5            CMP              R5,R4       ; Compare R5 (arr[J
+                                                            ]) with R4 (arr[sma
+                                                            llest])
+   34 00000020 DA00            BGE              CONT        ; If arr[J] >= arr[
+                                                            smallest], continue
+                                                            
+   35 00000022 461A            MOV              R2,R3       ; Update smallest i
+                                                            ndex to J
+   36 00000024         
+   37 00000024         CONT
+   38 00000024 F103 0301       ADD              R3,R3,#1    ; J++
+   39 00000028 E7F3            B                INNER_LOOP
+   40 0000002A         
+   41 0000002A         CHECK_SWAP
+   42 0000002A 4291            CMP              R1,R2       ; If I == smallest 
+                                                            index, no swap need
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                                                            ed
+   43 0000002C D007            BEQ              SKIP_SWAP
+   44 0000002E F850 4021       LDR              R4,[R0,R1, LSL #2] 
+                                                            ; Load arr[I]
+   45 00000032 F850 5022       LDR              R5,[R0,R2, LSL #2] ; Load arr[s
+                                                            mallest]
+   46 00000036 F840 5021       STR              R5,[R0,R1, LSL #2] ; Swap arr[I
+                                                            ] = arr[smallest]
+   47 0000003A F840 4022       STR              R4,[R0,R2, LSL #2] ; Swap arr[s
+                                                            mallest] = arr[I]
+   48 0000003E         
+   49 0000003E         SKIP_SWAP
+   50 0000003E F101 0101       ADD              R1,R1,#1    ; I++
+   51 00000042 E7E0            B                OUTER_LOOP
+   52 00000044         
+   53 00000044         STOP
+   54 00000044 E7FE            B                STOP
+   55 00000046         
+   56 00000046 00 00 00000000  AREA             mydata,DATA,READWRITE
+   57 00000000         
+   58 00000000 00000005 
+              00000003 
+              00000008 
+              00000001 
+              00000002 PACKED  DCD              0x5,0x3,0x8,0x1,0x2 ; Array to 
+                                                            be sorted
+   59 00000014         
+   60 00000014                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=.\q1.d -
+o.\q1.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\NX
+P\LPC17xx --predefine="__EVAL SETA 1" --list=.\q1.lst q1.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 1 in file q1.s
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 5 in file q1.s
+   Uses
+      At line 3 in file q1.s
+Comment: __Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CHECK_SWAP 0000002A
+
+Symbol: CHECK_SWAP
+   Definitions
+      At line 41 in file q1.s
+   Uses
+      At line 30 in file q1.s
+Comment: CHECK_SWAP used once
+CONT 00000024
+
+Symbol: CONT
+   Definitions
+      At line 37 in file q1.s
+   Uses
+      At line 34 in file q1.s
+Comment: CONT used once
+INNER_LOOP 00000012
+
+Symbol: INNER_LOOP
+   Definitions
+      At line 28 in file q1.s
+   Uses
+      At line 39 in file q1.s
+Comment: INNER_LOOP used once
+OUTER_LOOP 00000006
+
+Symbol: OUTER_LOOP
+   Definitions
+      At line 21 in file q1.s
+   Uses
+      At line 51 in file q1.s
+Comment: OUTER_LOOP used once
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 17 in file q1.s
+   Uses
+      At line 7 in file q1.s
+      At line 15 in file q1.s
+
+SKIP_SWAP 0000003E
+
+Symbol: SKIP_SWAP
+   Definitions
+      At line 49 in file q1.s
+   Uses
+      At line 43 in file q1.s
+Comment: SKIP_SWAP used once
+STOP 00000044
+
+Symbol: STOP
+   Definitions
+      At line 53 in file q1.s
+   Uses
+      At line 23 in file q1.s
+      At line 54 in file q1.s
+
+mycode 00000000
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+
+Symbol: mycode
+   Definitions
+      At line 11 in file q1.s
+   Uses
+      None
+Comment: mycode unused
+8 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+PACKED 00000000
+
+Symbol: PACKED
+   Definitions
+      At line 58 in file q1.s
+   Uses
+      At line 18 in file q1.s
+Comment: PACKED used once
+mydata 00000000
+
+Symbol: mydata
+   Definitions
+      At line 56 in file q1.s
+   Uses
+      None
+Comment: mydata unused
+2 symbols
+345 symbols in table
