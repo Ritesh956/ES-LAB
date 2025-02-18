@@ -1,0 +1,40 @@
+    AREA RESET, DATA, READONLY
+
+    EXPORT __Vectors
+
+__Vectors
+    DCD 0X10001000
+    DCD Reset_Handler
+
+    ALIGN
+
+    AREA mycode, CODE, READONLY
+
+    ENTRY
+
+    EXPORT Reset_Handler
+
+Reset_Handler
+
+PUSH_ASC
+    LDR R2, =0x24
+    LDR R3, =0x26
+    STMIA R13!, {R2, R3}  
+
+POP_ASC
+    LDMDB R13!, {R4, R5}  
+
+PUSH_DESC
+    SUB R13,#8      
+    STMIA R13, {R2, R3}   
+
+POP_DESC
+    LDMIA R13, {R6, R7}   
+    ADD R12, R12, #8      
+
+STOP
+    B STOP
+
+
+
+    END

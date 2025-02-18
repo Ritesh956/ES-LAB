@@ -1,0 +1,68 @@
+    AREA RESET, DATA, READONLY
+
+    EXPORT __Vectors
+
+__Vectors
+    DCD 0X10001000
+    DCD Reset_Handler
+
+    ALIGN
+
+    AREA mycode, CODE, READONLY
+
+    ENTRY
+
+    EXPORT Reset_Handler
+
+Reset_Handler
+    LDR R4, =UNPACKED    ; Load address of input array
+    LDR R5, =PACKED      ; Load address of output array
+    MOV R7, #3           ; Number of elements in the array (change as needed)
+
+PROCESS_NEXT
+    CMP R7, #0
+    BEQ END_PROGRAM      ; Stop when all elements are processed
+
+         ; Load an element and move to the next one
+		 
+	LDR R1,[R4];
+	LDR R0, [R4],#4;
+    MOV R3, #8           ; 8 nibbles per 32-bit number
+    MOV R6, #0           ; Initialize reversed result to 0
+
+REVERSE_NIBBLES
+    CMP R0, #0
+    BEQ CHK_PAL
+    AND R2, R0, #0x0F    ; Extract the last nibble
+    LSR R0, R0, #4       ; Shift right to process the next nibble
+
+    LSL R6, R6, #4       ; Shift left to make space
+    ORR R6, R6, R2       ; OR the extracted nibble
+
+    SUB R3, R3, #1
+    B REVERSE_NIBBLES
+
+CHK_PAL
+	CMP R6,R1;
+	BEQ STORE_RESULT;
+	B PROCESS_NEXT;
+
+
+STORE_RESULT
+    STR R6, [R5], #4     ; Store reversed integer and move to the next
+
+    SUB R7, R7, #1
+    B PROCESS_NEXT       ; Process next number in the array
+
+END_PROGRAM
+STOP
+    B STOP
+	
+UNPACKED DCD 0x232, 0x34, 0x51  ;
+
+    AREA mydata, DATA, READWRITE
+
+  ; Example input array
+PACKED  DCD 0x00, 0x00, 0x00      ; Output array to store reversed values
+
+    END

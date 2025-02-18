@@ -1,0 +1,47 @@
+    AREA RESET, DATA, READONLY
+
+    EXPORT __Vectors
+
+__Vectors
+    DCD 0X10001000
+    DCD Reset_Handler
+
+    ALIGN
+
+    AREA mycode, CODE, READONLY
+
+    ENTRY
+
+    EXPORT Reset_Handler
+
+Reset_Handler
+	LDR R0,=SRC;
+	MOV R1,#5;
+	MOV R2,#0; I INDEX
+	MOV R6,#5;
+	
+LOOP
+	CMP R2,#2
+	BEQ STOP
+	SUB R3,R1,R2;
+	SUB R3,#1;
+	LDR R4,[R0,R2, LSL #2]; I INDEX 
+	SUB R6,R6,#1;
+	LDR R5,[R0,R6,LSL #2]; J INDEX
+SWAP
+	MOV R7,R4; TEMP=R4;
+	STR R5,[R0,R2, LSL #2];
+	STR R7,[R0,R6,LSL #2];
+	ADD R2,#1;
+	B LOOP;
+	
+
+STOP
+    B STOP
+
+	AREA suvm , DATA , READWRITE;
+
+SRC DCD 0x5,0x3,0x8,0x1,0x2;
+
+
+    END

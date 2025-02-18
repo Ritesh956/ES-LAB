@@ -1,0 +1,62 @@
+    AREA RESET, DATA, READONLY
+
+    EXPORT __Vectors
+
+__Vectors
+    DCD 0X10001000
+    DCD Reset_Handler
+
+    ALIGN
+
+    AREA mycode, CODE, READONLY
+
+    ENTRY
+
+    EXPORT Reset_Handler
+
+Reset_Handler
+    MOV R1, #10         ; Divisor for extracting decimal digits
+    MOV R5, #0          ; Sum of cubes
+    LDR R0, =SRC        ; Load address of the number
+    LDR R0, [R0]        ; Load the actual number value
+    LDR R4, =RESULT     ; Load address of result storage
+    MOV R12, R0         ; Store original number for comparison
+
+LOOP
+    CMP R0, #0
+    BEQ COMP            ; If R0 is 0, check result
+
+    UDIV R2, R0, R1     ; R2 = R0 / 10 (quotient)
+    MLS R3, R2, R1, R0  ; R3 = R0 - (R2 * 10)  (Extract last digit)
+
+    ; Cube the extracted digit
+    MUL R6, R3, R3      ; R6 = R3^2
+    MUL R6, R6, R3      ; R6 = R3^3 (final cube)
+    
+    ADD R5, R5, R6      ; Sum up cubes of digits
+
+    MOV R0, R2          ; Update R0 with quotient (next digit)
+    
+    B LOOP              ; Repeat for next digit
+
+COMP
+    CMP R12, R5
+    BEQ STORE
+    MOV R7, #0xFF       ; FALSE
+    STR R7, [R4]
+    B STOP
+
+STORE
+    MOV R7, #0xAA       ; TRUE
+    STR R7, [R4]
+
+STOP
+    B STOP
+
+
+SRC DCD 153          ; Example: 153 (Armstrong number)
+	AREA suvm, DATA, READWRITE
+
+RESULT DCD 0         ; Will store 0xAA (True) or 0xFF (False)
+
+	END

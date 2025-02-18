@@ -1,0 +1,63 @@
+	AREA RESET, DATA, READONLY
+
+	EXPORT __Vectors
+
+__Vectors
+
+	DCD 0X10001000
+
+	DCD Reset_Handler
+
+	ALIGN
+
+	AREA mycode, CODE, READONLY
+
+	ENTRY
+
+	EXPORT Reset_Handler
+
+Reset_Handler
+
+	LDR R1,=UNPACKED;
+	LDR R0,[R1];
+
+	LDR R10,=PACKED;
+	MOV R3,#8
+	
+LOOP	CMP R3,#0
+		BEQ EXIT
+
+		AND R2,R0,#0x0F;LAST BIT
+		LSR R0,#4;
+	
+		ORR R6,R6,R2;
+		LSL R6,#4;
+		SUB R3,#1;
+		B LOOP
+	
+EXIT	STR R6,[R10];	
+	
+	
+
+	
+	
+	
+
+
+
+	
+
+
+	
+
+STOP
+	B STOP
+
+UNPACKED DCD 0x12345678;
+
+	AREA mydata, DATA, READWRITE
+
+PACKED DCD 0x00;
+
+	END
+
